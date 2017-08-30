@@ -31,7 +31,7 @@ $ bundle install
 $ bundle exec jekyll serve
 {% endhighlight %}
 
-Після запуску сервера, в браузері ідемо за адресою:
+Після запуску сервера, в браузері переходимо на сайт за адресою:
 
 <code>
   <a href="http://localhost:4000/">http://localhost:4000/</a>
