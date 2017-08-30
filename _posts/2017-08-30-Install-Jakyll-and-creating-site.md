@@ -31,6 +31,8 @@ $ bundle install
 $ bundle exec jekyll serve
 {% endhighlight %}
 
+Як виявилося це все описано в [README](https://github.com/vinitkumar/white-paper/blob/gh-pages/README.md#installation)
+
 Після запуску сервера, в браузері переходимо на сайт за адресою:
 
 <code>
