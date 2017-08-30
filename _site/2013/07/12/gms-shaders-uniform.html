@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+<title>Igor-slacker blog
+</title>
+<meta name="description" content="Igor-slacker blog
+">
+<meta name="keywords" content="GameMaker, GLSL">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="GameMaker Studio: шейдеры, uniform &#8211; ">
+<meta property="og:description" content="Igor-slacker blog
+">
+<meta property="og:url" content="http://localhost:4000/2013/07/12/gms-shaders-uniform.html">
+<meta property="og:site_name" content="">
+
+<!-- Webmaster Tools verfication -->
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/2013/07/12/gms-shaders-uniform.html">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title=" Feed">
+
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<link rel="stylesheet" href=" /css/main.min.css" type="text/css" />
+</head>
+<body>
+  <div class="header-container">
+  <header>
+      <ul class="nav">
+        <!--Change the  URL here if working on an absolute domain-->
+        <li><a href="http://localhost:4000"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>Home</a></li>
+        <li><a href="http://localhost:4000/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>About</a></li>
+      </ul>
+  </header>
+</div>
+
+  <div class="container">
+  <h2>GameMaker Studio: шейдеры, uniform</h2>
+<p class="meta">12 Jul 2013</p>
+
+<div class="post">
+<p>Как и обещал - разбор оставшихся шейдеров из демонстрации GameMaker Studio. К сожалению, не весь. Поскольку по ходу дела демонстрируются новые приёмы, разборы получаются несколько больше, чем ожидалось. Но я не стою на месте.</p>
+
+<p>Для тех, кто не догадался, что делает последний шейдер из предыдущего поста, отвечаю. Подробно. С примерами.</p>
+
+<p>По сути, это тот же пропускающий фрагментный шейдер. В нём всего одна новая для нас строчка.</p>
+
+<figure class="highlight"><pre><code class="language-glsl" data-lang="glsl"><span class="nb">gl_FragColor</span><span class="p">.</span><span class="n">bg</span> <span class="o">=</span> <span class="kt">vec2</span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">);</span>   <span class="o">//</span> <span class="err">Вот</span> <span class="err">эта</span></code></pre></figure>
+
+<p>Отметим, что действие это выполняется уже после всех предыдущих действий - то есть, к моменту начала этой строчки мы имеем просто обработанную картинку. Значит, эта строчка выполняет некий эффект уже с ней. Разберёмся, какой именно.</p>
+
+<p><code class="highlighter-rouge">gl_FragColor</code> - это <code class="highlighter-rouge">vec4</code>, вектор из четырёх компонент (у нас это цвета), к таким принято обращаться, по порядку, через <code class="highlighter-rouge">r</code>, <code class="highlighter-rouge">g</code>, <code class="highlighter-rouge">b</code> и <code class="highlighter-rouge">a</code>. Там находится цвет пикселя, для которого выполняется шейдер. С помощью точки берётся некая часть этого вектора - <code class="highlighter-rouge">bg</code>. Взяты две буквы компонент и склеены. В результате - вектор из двух чисел, представляющих значения <code class="highlighter-rouge">b</code> и <code class="highlighter-rouge">g</code> (синее и зелёное) из исходного вектора <code class="highlighter-rouge">gl_FragColor</code>. Это особенность языка. Можно просто взять с помощью точки у любого вектора некоторые из его компонент, причём в нужном вам порядке, просто записав их подряд. Справедливо это дело и на чтение, и на запись. Скажем, попробуйте такие эффекты:</p>
+
+<figure class="highlight"><pre><code class="language-glsl" data-lang="glsl"><span class="nb">gl_FragColor</span><span class="p">.</span><span class="n">bg</span> <span class="o">=</span> <span class="nb">gl_FragColor</span><span class="p">.</span><span class="n">gb</span><span class="p">;</span> <span class="c1">//Так
+</span><span class="nb">gl_FragColor</span><span class="p">.</span><span class="n">arbg</span> <span class="o">=</span> <span class="nb">gl_FragColor</span><span class="p">.</span><span class="n">argb</span><span class="p">;</span> <span class="c1">//Или так
+</span><span class="nb">gl_FragColor</span><span class="p">.</span><span class="n">rbg</span> <span class="o">=</span> <span class="nb">gl_FragColor</span><span class="p">.</span><span class="n">rgb</span><span class="p">;</span> <span class="o">//</span><span class="err">Или</span> <span class="err">даже</span> <span class="err">так</span><span class="p">,</span> <span class="err">то</span> <span class="err">же</span> <span class="err">самое</span><span class="o">!</span></code></pre></figure>
+
+<p>Далее присваивание. Всё как обычно - взять то, что справа, записать в то, что слева.</p>
+
+<p>Последнее - <code class="highlighter-rouge">vec2</code>. Это, с одной стороны, тип. С другой - функция, принимающая 2 аргумента, возвращающая значение типа <code class="highlighter-rouge">vec2</code>. Что делает? Очевидно же - собирает вектор из ваших чисел.</p>
+
+<p>Далее - разбор следующего шейдера из демки. Я отдыхаю, поэтому новых шейдеров пока не пишу (хотя те, кто следит за <a href="https://vk.com/s.d.side">группой в ВК</a>, уже могли видеть кое-какие результаты моих экспериментов). Но с новой механикой вам будет достаточно материала, чтобы поиграться. Сейчас поговорим о том, что такое <code class="highlighter-rouge">uniform</code>.</p>
+
+<p>Обойдёмся без заумных понятий - это просто константа. Для шейдера. То есть, некое значение, которое для всех экземпляров шейдера в текущем кадре будет одинаковым. Вы можете изменять его снаружи, из GML, но из шейдера - уже нет. В каком-то смысле, это то, что идёт из GML в шейдер, но не наоборот. И поскольку это стык между языками - тут не обошлось без весёлых костылей. Поехали по порядку.</p>
+
+<p>Поскольку это данные, с которыми работает шейдер - это переменная, объявляемая в его “шапке”. Всё, что в коде шейдера идёт до строчки <code class="highlighter-rouge">void main()</code> - шапка шейдера. И в шапке (смотрим шейдер 3, если у вас открыта демка, или просто читаем дальше) такая строчка:</p>
+
+<figure class="highlight"><pre><code class="language-glsl" data-lang="glsl"><span class="k">uniform</span> <span class="kt">vec4</span> <span class="n">f_ChannelMask</span><span class="p">;</span></code></pre></figure>
+
+<p>4-компонентный входной вектор. Сначала тот факт, что это данные на вход (ключевое слово <code class="highlighter-rouge">uniform</code>), затем тип (<code class="highlighter-rouge">vec4</code>), и название (<code class="highlighter-rouge">f_ChannelMask</code>). Хорошо, нам известно название, что дальше? Нужно получить из шейдера индекс этой переменной, чтобы её изменять.</p>
+
+<figure class="highlight"><pre><code class="language-glsl" data-lang="glsl"><span class="n">channel_mask</span> <span class="o">=</span> <span class="n">shader_get_uniform</span><span class="p">(</span><span class="n">sShaderDemo3</span><span class="p">,</span> <span class="s">"f_ChannelMask"</span><span class="p">);</span></code></pre></figure>
+
+<p>Если вы уже работали со структурами данных в GM, то уже представляете, что будет дальше. Мы сейчас будем дёргать функции, которые изменяют указанную им переменную в шейдере. Но они принимают не название, а индекс. Его-то мы сейчас и получили. Теперь применим. Процедура рисования:</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="n">shader_set</span><span class="p">(</span><span class="n">sShaderDemo3</span><span class="p">);</span> <span class="c1">//Включить наш шейдер
+</span><span class="n">shader_set_uniform_f</span><span class="p">(</span><span class="n">channel_mask</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span> <span class="c1">//Записать туда вектор (1, 0, 0, 1)
+</span><span class="n">draw_sprite</span><span class="p">(</span><span class="n">sprite_index</span><span class="p">,</span><span class="n">image_index</span><span class="p">,</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span> <span class="c1">//Нарисовать спрайт
+</span><span class="n">shader_reset</span><span class="p">();</span> <span class="o">//</span><span class="err">Сбросить</span> <span class="err">шейдер</span></code></pre></figure>
+
+<p>Теперь для каждого пикселя выполнится шейдер, в котором переменная <code class="highlighter-rouge">f_ChannelMask</code> передана из GML. Почитаем сам код шейдера:</p>
+
+<figure class="highlight"><pre><code class="language-glsl" data-lang="glsl"><span class="c1">//На вход от графической системы:
+</span><span class="k">varying</span> <span class="kt">vec2</span> <span class="n">v_vTexcoord</span><span class="p">;</span> <span class="c1">//Текстурные координаты для фрагмента
+</span><span class="k">varying</span> <span class="kt">vec4</span> <span class="n">v_vColour</span><span class="p">;</span> <span class="c1">//Цвет от вершин для фрагмента
+//А это на вход от нас:
+</span><span class="k">uniform</span> <span class="kt">vec4</span> <span class="n">f_ChannelMask</span><span class="p">;</span> <span class="c1">//цвет-маска
+</span><span class="kt">void</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="nb">gl_FragColor</span> <span class="o">=</span> <span class="p">(</span><span class="n">v_vColour</span> <span class="o">*</span> <span class="n">texture2D</span><span class="p">(</span> <span class="n">gm_BaseTexture</span><span class="p">,</span> <span class="n">v_vTexcoord</span> <span class="p">))</span> <span class="o">*</span> <span class="n">f_ChannelMask</span><span class="p">;</span>
+    <span class="c1">//Абсолютно то же самое, что пропускающий шейдер. С одним исключением.
+</span>    <span class="c1">//Весь результат умножается на переданный снаружи цвет.
+</span><span class="p">}</span></code></pre></figure>
+
+<p>Практической пользы от этого эффекта мало. У нас уже есть <code class="highlighter-rouge">image_blend</code>, и вся эта конструкция позволяет лишь использовать сразу два цвета. Исходный цвет сначала смешается с <code class="highlighter-rouge">image_blend</code>, потом с переданным через <code class="highlighter-rouge">uniform</code>. Но что же, вся работа насмарку? Нет, во-первых, мы узнали о том, что такое uniform и зачем это нужно.</p>
+
+<p>Во-вторых - мы можем передавать туда, на самом деле, не только цвет. По спецификации, обычный цвет в RGBA - это вектор из 4 чисел от 0 до 1. Что если число больше единицы? Из GM такой цвет просто не закодировать, потому что это не цвет. Это маска. То есть, мы можем таким образом сделать спрайт не только темнее (что позволял сделать <code class="highlighter-rouge">image_blend</code>), но и светлее! К примеру, заменим соответствующую строчку:</p>
+
+<figure class="highlight"><pre><code class="language-glsl" data-lang="glsl"><span class="n">shader_set_uniform_f</span><span class="p">(</span><span class="n">channel_mask</span><span class="p">,</span> <span class="mi">1</span><span class="p">.</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">.</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">.</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="o">//</span><span class="err">Записать</span> <span class="err">туда</span> <span class="err">вектор</span> <span class="p">(</span><span class="mi">1</span><span class="p">.</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">.</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">.</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span></code></pre></figure>
+
+<p>Что получится?  Попробуйте сами! А заодно догадайтесь, почему я не стал трогать последнее значение.</p>
+
+</div>
+
+
+
+  
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', '']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+  </div><!-- /.main -->
+</body>
+</html>

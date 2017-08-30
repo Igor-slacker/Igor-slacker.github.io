@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+<title>Igor-slacker blog
+</title>
+<meta name="description" content="Установка і налаштування Jekyll та створення сайту">
+<meta name="keywords" content="Jekyll, website">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Створення сайту на Jekyll &#8211; ">
+<meta property="og:description" content="Установка і налаштування Jekyll та створення сайту">
+<meta property="og:url" content="http://localhost:4000/articles/2017/08/30/Install-Jakyll-and-creating-site.html">
+<meta property="og:site_name" content="">
+
+<!-- Webmaster Tools verfication -->
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/articles/2017/08/30/Install-Jakyll-and-creating-site.html">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title=" Feed">
+
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<link rel="stylesheet" href=" /css/main.min.css" type="text/css" />
+</head>
+<body>
+  <div class="header-container">
+  <header>
+      <ul class="nav">
+        <!--Change the  URL here if working on an absolute domain-->
+        <li><a href="http://localhost:4000"><span class="mega-octicon octicon-terminal" style="margin-right: 6px;"></span>Home</a></li>
+        <li><a href="http://localhost:4000/about"><span class="mega-octicon octicon-person" style="margin-right: 6px;"></span>About</a></li>
+      </ul>
+  </header>
+</div>
+
+  <div class="container">
+  <h2>Створення сайту на Jekyll</h2>
+<p class="meta">30 Aug 2017</p>
+
+<div class="post">
+<p>Спроба запустити блог на Jekyll</p>
+
+<h4 id="Установка-jekyll">Установка Jekyll</h4>
+
+<p>Для запуску і налаштування сайту на компʼютері потрібно встановити Jekyll. Для цього в терміналі даємо команду:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># gem install jekyll </span></code></pre></figure>
+
+<p>Потім скачуємо шаблон і наповнюємо його. Для запуску сервера Jekyll потрібно зайти в корінь сайту і дати команду:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="gp">$ </span>jekyll serve</code></pre></figure>
+
+<p>Для шаблона  White Paper, Jekyll видав якусь ругань відносно bundlerʼа. Довелося ще дещо зробити:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># gem install bundler</span>
+<span class="gp">$ </span>bundle install
+<span class="gp">$ </span>bundle <span class="nb">exec </span>jekyll serve</code></pre></figure>
+
+<p>Після запуску сервера, в браузері ідемо за адресою:</p>
+
+<p><code>
+  <a href="http://localhost:4000/">http://localhost:4000/</a>
+</code></p>
+
+<h4 id="Наповнення-сайту">Наповнення сайту</h4>
+
+<p>Щоб додати пост, ідемо до каталога _posts і створюємо фойл за типом:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">YYYY-MM-DD-post-name.md
+чи
+YYYY-MM-DD-post-name.html</code></pre></figure>
+
+<p>і наповнюємо його.</p>
+
+</div>
+
+
+
+  
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', '']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+  </div><!-- /.main -->
+</body>
+</html>

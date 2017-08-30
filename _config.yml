@@ -1,0 +1,34 @@
+name: Igor-slacker
+description: >
+    Igor-slacker blog
+about: >
+    Igor Krasylivskyi
+
+master_repo: false
+url: "https://igor-slacker.github.io"
+markdown: kramdown
+highlighter: rouge
+
+plugins: ['jekyll-paginate', 'jekyll-gist']
+
+paginate: 5
+
+logo:             logo.png
+disqus_shortname:
+
+owner:
+  name:           Igor
+  avatar:         ""
+  email:          ""
+  # Social networking links used in footer. Update and remove as you like.
+  twitter:
+  github:
+  stackexchange:
+  # For Google Authorship https://plus.google.com/authorship
+  google_plus:
+
+# Analytics and webmaster tools stuff goes here
+google_analytics:
+google_verify:
+# https://ssl.bing.com/webmaster/configure/verify/ownership Option 2 content= goes here
+bing_verify:
